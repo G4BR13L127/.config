@@ -13,3 +13,8 @@ autocmd InsertLeave * set nocul
 
 " enable line length marker
 set colorcolumn=80
+
+" setup auto indentation
+set tabstop=4
+set expandtab
+set autoindent
