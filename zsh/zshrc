@@ -1,8 +1,16 @@
 # File: ~/.config/zsh/zshrc
 
+# load git information
+autoload -Uz vcs_info
+precmd() { vcs_info }
+
+zstyle ':vcs_info:git:*' formats ' [%s@%b]'
+
+setopt prompt_subst
+
 # enable colors
 autoload -U colors && colors
-PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+PROMPT='%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$fg[yellow]%}${vcs_info_msg_0_}%{$reset_color%}$%b '
 
 # History Settings
 HISTFILE=~/.histfile
