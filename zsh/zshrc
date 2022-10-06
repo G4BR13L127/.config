@@ -1,0 +1,67 @@
+# File: ~/.config/zsh/zshrc
+
+# enable colors
+autoload -U colors && colors
+PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%M %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+
+# History Settings
+HISTFILE=~/.histfile
+HISTSIZE=10000
+SAVEHIST=10000
+setopt appendhistory
+
+# Setup auto completion
+autoload -U compinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots)
+
+# Use vim bindings for auto completion
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -v '^?' backward-delete-char
+
+# enable vi mode
+bindkey -v
+export KEYTIMEOUT=1
+
+# Change cursor shape for different vi modes.
+_fix_cursor() {
+  echo -ne '\e[5 q'
+}
+
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] ||
+     [[ $1 = 'block' ]]; then
+    echo -ne '\e[1 q'
+
+  elif [[ ${KEYMAP} == main ]] ||
+       [[ ${KEYMAP} == viins ]] ||
+       [[ ${KEYMAP} = '' ]] ||
+       [[ $1 = 'beam' ]]; then
+    _fix_cursor
+  fi
+}
+zle -N zle-keymap-select
+
+# Use beam shape cursor on startup.
+echo -ne '\e[5 q'
+
+# Use beam shape cursor for each new prompt.
+preexec_functions+=(_fix_cursor)
+
+# Edit line in vim with ctrl+e
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^e' edit-command-line
+
+# Load zsh-syntax-highlighting
+source ~/.config/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# change default configuration
+export VIMINIT='source ~/.config/vim/vimrc'
+
+# set default editor
+export EDITOR=vim

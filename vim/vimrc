@@ -1,0 +1,15 @@
+" show numbers
+set number
+
+" show relative line numbers
+set rnu
+
+" enable syntax highlighting
+syntax on
+
+" underline current line in insert mode
+autocmd InsertEnter * set cul
+autocmd InsertLeave * set nocul
+
+" enable line length marker
+set colorcolumn=80
